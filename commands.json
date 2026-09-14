@@ -1,0 +1,17 @@
+{
+  "wakeWord": "cosmo",
+  "confidenceThreshold": 0.75,
+  "commands": [
+    { "phrase": "open chrome", "type": "process", "path": "chrome.exe", "args": "" },
+    { "phrase": "open notepad", "type": "process", "path": "notepad.exe", "args": "" },
+    { "phrase": "open calculator", "type": "process", "path": "calc.exe", "args": "" },
+    { "phrase": "open file explorer", "type": "process", "path": "explorer.exe", "args": "" },
+    { "phrase": "open files", "type": "process", "path": "explorer.exe", "args": "" },
+    { "phrase": "open edge", "type": "process", "path": "msedge.exe", "args": "" },
+    { "phrase": "open discord", "type": "process", "path": "%LOCALAPPDATA%\\Discord\\Update.exe", "args": "--processStart Discord.exe" },
+    { "phrase": "look up", "type": "search", "urlTemplate": "https://www.google.com/search?q={0}" },
+    { "phrase": "dictate", "type": "dictate" },
+    { "phrase": "run claude", "type": "claude-terminal", "path": "%USERPROFILE%\\Documents\\Claude" },
+    { "phrase": "lock the computer", "type": "system", "action": "lock" }
+  ]
+}

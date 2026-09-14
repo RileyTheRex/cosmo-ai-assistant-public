@@ -1,0 +1,15 @@
+# Build output - rebuilt by build.ps1, not source
+bin/
+
+# Runtime logs and local machine-specific state - not source, and the log can
+# contain transcripts of everything spoken to Cosmo
+cosmo.log
+settings.json
+
+# Pending reminders - local runtime state, not source
+reminders.json
+
+# Whisper server binaries and models - large binary assets (600+MB, including
+# a 148MB active model and a 488MB unused fallback), not source. Fetched
+# separately when setting up a new machine; see README.md.
+whisper/
