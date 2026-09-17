@@ -46,13 +46,43 @@ Pending reminders are persisted to `reminders.json` (next to `commands.json`) an
 
 ---
 
+## 🚀 Quick self-install
+
+Two scripts, run in order, get you from a fresh clone to a working `bin\CosmoAIAssistant.exe`:
+
+```powershell
+.\build.ps1           # compiles the app via csc.exe -> bin\CosmoAIAssistant.exe
+.\install-whisper.ps1 # downloads whisper.cpp's server + the base.en model into whisper\
+```
+
+| Script | What it does |
+|---|---|
+| `build.ps1` | Invokes `csc.exe` directly against the fixed file list (see [Building](#-building)) to produce `bin\CosmoAIAssistant.exe` |
+| `install-whisper.ps1` | Downloads a prebuilt whisper.cpp CPU x64 server release, copies `whisper-server.exe` + the minimal DLL set into `whisper\`, and downloads `ggml-base.en.bin` into `whisper\models\` — reproduces the manual layout described below without a 600MB repo checkout |
+
+Optional, once both scripts have run:
+
+```powershell
+.\install-startup.ps1 # adds a shortcut so Cosmo launches at Windows sign-in
+```
+
+`install-whisper.ps1` takes two optional params if you want a different whisper.cpp release or model size:
+
+```powershell
+.\install-whisper.ps1 -Tag b5130 -Model ggml-base.en.bin
+```
+
+Then launch `bin\CosmoAIAssistant.exe` — it starts `whisper-server.exe` as a child process automatically (see [`WhisperEngine.cs`](WhisperEngine.cs)) and adds a tray icon.
+
+---
+
 ## 🔧 Building
 
 No `.csproj`/`.sln` — run `build.ps1`, which invokes `csc.exe` directly with an explicit file list.
 
 > ⚠️ **Heads up:** any new `.cs` file must be added to that list manually, or it silently fails to compile in — no error, just missing functionality.
 
-You'll need a **whisper.cpp Windows server build** (not included — ~600MB with models, too large for this repo). Fetch a release from the whisper.cpp releases page and lay it out as `whisper/` (a sibling of `bin/`):
+You'll need a **whisper.cpp Windows server build** (not included — ~600MB with models, too large for this repo). Run `install-whisper.ps1` (see [Quick self-install](#-quick-self-install) above) to fetch one automatically, or lay it out by hand as `whisper/` (a sibling of `bin/`):
 
 - `whisper-server.exe` + the minimal DLL set: `ggml.dll`, `ggml-base.dll`, `ggml-cpu-*.dll` (all CPU-dispatch variants for your target machines), `whisper.dll`
 - `models/ggml-base.en.bin` — download via whisper.cpp's model-download script or directly from Hugging Face. `base.en` trades a little accuracy for much lower latency than `small.en`, which matters for a push-to-talk tool used mid-conversation
